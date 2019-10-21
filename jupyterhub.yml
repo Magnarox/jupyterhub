@@ -1,0 +1,39 @@
+# Copyright (c) Jupyter Development Team.
+# Distributed under the terms of the Modified BSD License.
+
+# JupyterHub docker-compose configuration file
+version: "2"
+
+services:
+  jupyterhub:
+    build:
+      context: ./jupyterhub
+      args:
+        JUPYTERHUB_VERSION: 0.9.3
+    restart: always
+    image: jupyterhub_build
+    container_name: jupyterhub_hub
+    volumes:
+      # Bind Docker socket on the host so we can connect to the daemon from
+      # within the container
+      - "/var/run/docker.sock:/var/run/docker.sock:rw"
+      # Bind Docker volume on host for JupyterHub database and cookie secrets
+      #- "data:/home/capgemini/hubdata"
+    ports:
+      - "8000:8000"
+    environment:
+      # All containers will join this network
+      DOCKER_NETWORK_NAME: hub_network
+      # JupyterHub will spawn this Notebook image for users
+      DOCKER_NOTEBOOK_IMAGE: jupyter/minimal-notebook:8ccdfc1da8d5
+      # JupyterHub will spawn this Notebook image for users
+      HUB_IP: jupyterhub_hub
+      # Notebook directory inside user image
+ #     DOCKER_NOTEBOOK_DIR: ${DOCKER_NOTEBOOK_DIR}
+    command: >
+      jupyterhub   
+
+networks:
+  default:
+    external:
+      name: hub_network
