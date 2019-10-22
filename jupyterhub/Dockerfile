@@ -10,3 +10,6 @@ RUN /opt/conda/bin/pip install --no-cache-dir \
 
 # Copy the JupyterHub configuration in the container
 COPY jupyterhub_config.py .
+
+RUN useradd -m user1 -p "$(openssl passwd -1 user1)"
+RUN useradd -m user2 -p "$(openssl passwd -1 user2)"

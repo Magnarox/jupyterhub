@@ -30,7 +30,7 @@ services:
 #      DOCKER_SPAWN_CMD: start-singleuser.sh
       HUB_IP: jupyterhub
     command: >
-      jupyterhub   
+      jupyterhub
 
 networks:
   default:
