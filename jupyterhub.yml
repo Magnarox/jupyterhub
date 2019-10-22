@@ -11,8 +11,7 @@ services:
       args:
         JUPYTERHUB_VERSION: 0.9.3
     restart: always
-    image: jupyterhub_build
-    container_name: jupyterhub_hub
+    image: jupyterhub_hub
     volumes:
       # Bind Docker socket on the host so we can connect to the daemon from
       # within the container
@@ -23,17 +22,17 @@ services:
       - "8000:8000"
     environment:
       # All containers will join this network
-      DOCKER_NETWORK_NAME: hub_network
+      DOCKER_NETWORK_NAME: jupyterhub-network
       # JupyterHub will spawn this Notebook image for users
-      DOCKER_NOTEBOOK_IMAGE: jupyter/minimal-notebook:8ccdfc1da8d5
-      # JupyterHub will spawn this Notebook image for users
-      HUB_IP: jupyterhub_hub
+      DOCKER_NOTEBOOK_IMAGE: jupyterhub-user
       # Notebook directory inside user image
- #     DOCKER_NOTEBOOK_DIR: ${DOCKER_NOTEBOOK_DIR}
+      DOCKER_NOTEBOOK_DIR: /home/jovyan/work
+#      DOCKER_SPAWN_CMD: start-singleuser.sh
+      HUB_IP: jupyterhub
     command: >
       jupyterhub   
 
 networks:
   default:
     external:
-      name: hub_network
+      name: jupyterhub-network
